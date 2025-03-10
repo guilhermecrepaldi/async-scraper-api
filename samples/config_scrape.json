@@ -1,0 +1,27 @@
+{
+    "descricao": "Exemplo de configuracao para scraping de uma pagina de noticias",
+    "url_alvo": "https://example.com/noticias",
+    "seletor_css": "article.news-item h2 a",
+    "prioridade": "normal",
+    "timeout": 30,
+    "max_tentativas": 3,
+    "parser_custom": null,
+    "regras": [
+        {
+            "nome": "titulo",
+            "seletor": "h1.titulo-principal",
+            "atributo": "text"
+        },
+        {
+            "nome": "links_artigos",
+            "seletor": "div.lista-noticias a",
+            "atributo": "href"
+        },
+        {
+            "nome": "data_publicacao",
+            "seletor": "span.data",
+            "atributo": "text",
+            "regex": "(\\d{2}/\\d{2}/\\d{4})"
+        }
+    ]
+}

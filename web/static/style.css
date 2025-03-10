@@ -1,0 +1,77 @@
+/* async-scraper-api — Estilos customizados */
+
+body {
+    min-height: 100vh;
+}
+
+/* Cards com hover sutil */
+.card {
+    transition: border-color 0.2s ease;
+}
+.card:hover {
+    border-color: #6c757d;
+}
+
+/* Scrollbar customizada para dark mode */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+::-webkit-scrollbar-track {
+    background: #1a1a1a;
+}
+::-webkit-scrollbar-thumb {
+    background: #444;
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #666;
+}
+
+/* Pre/code blocks */
+pre {
+    font-size: 0.8rem;
+    line-height: 1.5;
+}
+
+/* Form inputs no dark mode */
+.form-control:focus,
+.form-select:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+}
+
+/* Navbar brand */
+.navbar-brand {
+    font-weight: 700;
+    letter-spacing: -0.5px;
+}
+
+/* Tabelas */
+.table-dark {
+    --bs-table-bg: #212529;
+}
+.table-dark td,
+.table-dark th {
+    vertical-align: middle;
+}
+
+/* Badges */
+.badge {
+    font-weight: 500;
+}
+
+/* Feather icons inline */
+.feather {
+    vertical-align: -2px;
+}
+
+/* Spinner */
+.spinner-border {
+    vertical-align: middle;
+}
+
+/* Footer fixo no final */
+footer {
+    font-size: 0.85rem;
+}

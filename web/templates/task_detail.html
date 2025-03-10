@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+{% block title %}Tarefa {{ tarefa.id[:12] }} — async-scraper-api{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/dashboard" class="text-info">Dashboard</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Tarefa {{ tarefa.id[:12] }}</li>
+            </ol>
+        </nav>
+        <h1 class="display-6">
+            <i data-feather="file-text" class="me-2 text-primary"></i>
+            Detalhes da Tarefa
+        </h1>
+    </div>
+</div>
+
+<div class="row g-4">
+    <!-- Info da Tarefa -->
+    <div class="col-md-5">
+        <div class="card bg-dark border-secondary h-100">
+            <div class="card-header border-secondary">
+                <h5 class="mb-0"><i data-feather="info" class="me-1"></i> Informações</h5>
+            </div>
+            <div class="card-body">
+                <dl class="row mb-0">
+                    <dt class="col-sm-4 text-secondary">ID</dt>
+                    <dd class="col-sm-8"><code>{{ tarefa.id }}</code></dd>
+
+                    <dt class="col-sm-4 text-secondary">URL</dt>
+                    <dd class="col-sm-8 text-break">
+                        <a href="{{ tarefa.url_alvo }}" target="_blank" class="text-info">
+                            {{ tarefa.url_alvo }}
+                        </a>
+                    </dd>
+
+                    <dt class="col-sm-4 text-secondary">Seletor CSS</dt>
+                    <dd class="col-sm-8"><code>{{ tarefa.seletor_css or '(vazio — pegando title)' }}</code></dd>
+
+                    <dt class="col-sm-4 text-secondary">Prioridade</dt>
+                    <dd class="col-sm-8">
+                        {% if tarefa.prioridade == 'alta' %}
+                            <span class="badge bg-danger">alta</span>
+                        {% elif tarefa.prioridade == 'normal' %}
+                            <span class="badge bg-primary">normal</span>
+                        {% else %}
+                            <span class="badge bg-secondary">baixa</span>
+                        {% endif %}
+                    </dd>
+
+                    <dt class="col-sm-4 text-secondary">Status</dt>
+                    <dd class="col-sm-8">
+                        {% if tarefa.status == 'concluido' %}
+                            <span class="badge bg-success">concluído</span>
+                        {% elif tarefa.status == 'erro' %}
+                            <span class="badge bg-danger">erro</span>
+                        {% elif tarefa.status == 'processando' %}
+                            <span class="badge bg-info">processando</span>
+                        {% else %}
+                            <span class="badge bg-warning text-dark">pendente</span>
+                        {% endif %}
+                    </dd>
+
+                    <dt class="col-sm-4 text-secondary">Tentativas</dt>
+                    <dd class="col-sm-8">{{ tarefa.tentativas }}/{{ tarefa.max_tentativas }}</dd>
+
+                    <dt class="col-sm-4 text-secondary">Timeout</dt>
+                    <dd class="col-sm-8">{{ tarefa.timeout }}s</dd>
+
+                    {% if tarefa.erro %}
+                    <dt class="col-sm-4 text-secondary">Erro</dt>
+                    <dd class="col-sm-8 text-danger">{{ tarefa.erro }}</dd>
+                    {% endif %}
+                </dl>
+            </div>
+        </div>
+    </div>
+
+    <!-- Resultado -->
+    <div class="col-md-7">
+        <div class="card bg-dark border-secondary h-100">
+            <div class="card-header border-secondary d-flex justify-content-between align-items-center">
+                <h5 class="mb-0"><i data-feather="database" class="me-1"></i> Resultado</h5>
+                {% if resultado %}
+                <a href="/api/results/{{ tarefa.id }}" target="_blank" class="btn btn-sm btn-outline-info">
+                    <i data-feather="external-link" style="width:14px;height:14px;"></i> JSON
+                </a>
+                {% endif %}
+            </div>
+            <div class="card-body">
+                {% if resultado %}
+                    <pre class="mb-0 bg-black text-light p-3 rounded" style="max-height: 500px; overflow-y: auto;"><code>{{ resultado | tojson(indent=2) }}</code></pre>
+                {% elif tarefa.status == 'pendente' or tarefa.status == 'processando' %}
+                    <div class="text-center py-5 text-secondary">
+                        <div class="spinner-border text-info mb-3" role="status"></div>
+                        <p>Aguardando processamento...</p>
+                        <button class="btn btn-outline-info btn-sm" onclick="location.reload()">Atualizar</button>
+                    </div>
+                {% elif tarefa.status == 'erro' %}
+                    <div class="text-center py-5 text-danger">
+                        <i data-feather="alert-triangle" style="width:48px;height:48px;"></i>
+                        <p class="mt-2">{{ tarefa.erro or 'Erro desconhecido' }}</p>
+                    </div>
+                {% else %}
+                    <div class="text-center py-5 text-secondary">
+                        <i data-feather="clock" style="width:48px;height:48px;"></i>
+                        <p class="mt-2">Nenhum resultado disponível.</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-12">
+        <a href="/dashboard" class="btn btn-outline-secondary">
+            <i data-feather="arrow-left" class="me-1"></i> Voltar ao Dashboard
+        </a>
+    </div>
+</div>
+{% endblock %}
